@@ -1,25 +1,14 @@
-// // Import & require mysql2
-// const mysql = require('mysql2');
-// // Import & require inquirer
-// const inquirer = require('inquirer');
+// Import & require mysql2
+const mysql = require('mysql2');
+// Import & require inquirer
+const inquirer = require('inquirer');
 
 // const PORT = process.env.PORT || 3001;
 // // Express middleware
 // app.use(express.urlencoded({ extended: false }));
 // app.use(express.json());
 
-// // Connect to database
-// const db = mysql.createConnection(
-//   {
-//     host: 'localhost',
-//     // MySQL username,
-//     user: 'root',
-//     // MySQL password
-//     password: '',
-//     database: 'classlist_db'
-//   },
-//   console.log(`Connected to the classlist_db database.`)
-// );
+
 
 // // Query database
 // db.query('SELECT * FROM students', function (err, results) {
@@ -34,3 +23,11 @@
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 // });
+// function init(choices) => {
+//     prompt.inquirer(
+//         type: listenerCount,
+//         name: 
+//     )
+
+// }
+// )
