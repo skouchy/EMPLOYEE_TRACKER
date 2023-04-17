@@ -3,9 +3,14 @@
 
 THEN I am presented with the following options: 
  <!-- TODO:  CREATE prepared statements for each GET, then test, then insert statement into schema -->
- <!-- *?* view all departments,  --> GET
- <!-- *?* view all roles,  --> GET
- <!-- *?* view all employees,  --> GET
+ <!--  get all departments,  GET -->
+ <!--  get one department,  GET -->
+
+ <!--  get all roles,   GET-->
+ <!--  get one role,   GET-->
+
+ <!-- *?* get all employees,   GET-->
+ <!-- *?* get one employee,   GET-->
 
  <!-- TODO:  CREATE prepared statements for each CREATE, then test, then insert statement into schema -->
  <!-- ? add a department,  --> POST
