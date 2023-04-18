@@ -5,8 +5,7 @@ const inquirer = require('inquirer');
 // const mysql = require('dotenv').config();
 // const console = require('console.table');
 
-
-function init() {
+function mainMenu() {
   inquirer.prompt({
     type: 'list',
     name: 'firstChoice',
@@ -22,24 +21,59 @@ function init() {
       'Exit'
     ]
   }).then(({ firstChoice }) => {
+    if (firstChoice === 'View all departments') {
+      getDepartments();
+    }
+    if (firstChoice === 'View all roles') {
+      getRoles();
+    }
     if (firstChoice === 'View all employees') {
       getEmployees();
     }
+    if (firstChoice === 'Update employee role') {
+      updateRole();
+    }
+    
 
   }
   )
 
-};
-function getEmployees() {
+}
 
+function init() {
+  mainMenu();
+};
+
+function getDepartments() {
+  db.query('SELECT * FROM departments', (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(res);
+    mainMenu();
+  })
+};
+
+function getRoles() {
+  db.query('SELECT * FROM roles', (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(res);
+    mainMenu();
+  });
+};
+
+function getEmployees() {
   db.query('SELECT * FROM employees', (err, res) => {
     if (err) {
       console.log(err);
     }
-
     console.table(res);
-  });
+    mainMenu();
+  })
 };
+
 
 // db.get('/employees', (req, res) => {
 // const sql = `SELECT * FROM employees;`;
