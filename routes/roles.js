@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/connection');
+const db = require('../db/connection');
 
 
 
-router.get('/departments', (req, res) => {
-    const sql = `SELECT * FROM departments`;
+router.get('/roles', (req, res) => {
+    const sql = `SELECT * FROM roles`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -13,14 +13,14 @@ router.get('/departments', (req, res) => {
             return;
         }
         res.json({
-            message: 'Departments Displayed!',
+            message: 'Displaying Roles',
             data: rows
         });
     });
 });
 
-router.get('/department/:id', (req, res) => {
-    const sql = `SELECT * FROM departments WHERE id = ?`;
+router.get('/role/:id', (req, res) => {
+    const sql = `SELECT * FROM roles WHERE id = ?`;
     const params = [req.params.id];
 
     db.query(sql, params, (err, row) => {
@@ -29,24 +29,18 @@ router.get('/department/:id', (req, res) => {
             return;
         }
         res.json({
-            message: `Displaying selected department`,
+            message: `Displaying selected role`,
             data: row
         });
     });
 });
 
+router.post('/role', (req, res) => {
 
-
-router.post('/department', (req, res) => {
-    // // Query database
-    // db.query('SELECT * FROM students', function (err, results) {
-    //   console.log(results);
-    // });
 });
 
 
-
-router.put('/department/:id', (req, res) => {
+router.put('/role/:id', (req, res) => {
 
 });
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +19,11 @@
   },
   "homepage": "https://github.com/skouchy/EMPLOYEE_TRACKER#readme",
   "dependencies": {
-    "console.table": "^0.10.0",
     "express": "^4.18.2",
     "inquirer": "^8.2.4",
     "mysql2": "^3.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "console.table": "^0.10.0"
+  }
 }

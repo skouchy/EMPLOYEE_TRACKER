@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/connection');
+const db = require('../db/connection');
 
 
 
-router.get('/employees', (req, res) => {
-    const sql = `SELECT * FROM employees`;
+router.get('/departments', (req, res) => {
+    const sql = `SELECT * FROM departments`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -13,34 +13,40 @@ router.get('/employees', (req, res) => {
             return;
         }
         res.json({
-            message: 'All Employees Displayed!',
+            message: 'Departments Displayed!',
             data: rows
         });
     });
 });
 
-router.get('/employee/:id', (req, res) => {
-    const sql = `SELECT * FROM employees WHERE id = ?`;
+router.get('/department/:id', (req, res) => {
+    const sql = `SELECT * FROM departments WHERE id = ?`;
     const params = [req.params.id];
-    
+
     db.query(sql, params, (err, row) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json({
-            message: `Displaying selected employee`,
+            message: `Displaying selected department`,
             data: row
         });
     });
 });
 
 
-router.post('/employee', (req, res) => {
-    
+
+router.post('/department', (req, res) => {
+    // // Query database
+    // db.query('SELECT * FROM students', function (err, results) {
+    //   console.log(results);
+    // });
 });
 
-router.put('/employee/:id', (req, res) => {
+
+
+router.put('/department/:id', (req, res) => {
 
 });
 
