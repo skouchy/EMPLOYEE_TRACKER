@@ -66,9 +66,9 @@ THEN I am presented with a formatted table showing
 <!-- first names,  -->
 <!-- last names,  -->
 <!-- job titles,  -->
-<!-- * departments,  --><!-- * REFERENCE department_id -->
-<!-- * salaries,  -->
-<!-- * managers that the employees report to --><!-- * REFERENCE department.manager_id -->
+<!-- departments,  --><!-- * REFERENCE department_id -->
+<!-- salaries,  -->
+<!-- managers that the employees report to --><!-- * REFERENCE department.manager_id -->
 <!-- ????? TODO: CREATE Manager table?????? --->
 
 

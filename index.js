@@ -1,3 +1,4 @@
+const { response } = require('express');
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 
@@ -31,6 +32,9 @@ function mainMenu() {
     }
     if (menuChoice === 'Update employee role') {
       updateRole();
+    }
+    if (menuChoice === 'Add an employee') {
+      addEmployee();
     }
     if (menuChoice === 'EXIT') {
       console.log('Make sure your employees feel appreciated! ByeBye for now!');
@@ -71,14 +75,17 @@ function getRoles() {
 
 function getEmployees() {
 
-  db.query('SELECT employees.*, roles.title AS job_title, departments.name AS department FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id', (err, res) => {
+  db.query('SELECT employees.id AS Employee_ID, employees.first_name, employees.last_name, manager_id AS manager, roles.title AS job_title, departments.name AS department, roles.salary AS salary FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id', (err, res) => {
     if (err) {
       console.log(err);
     }
     console.table(res);
     mainMenu();
-  })
-};
+
+  });
+}
+
+
 
 
 // * ================================= ADD TO TABLES ================================== * //
@@ -115,16 +122,43 @@ function addEmployee() {
         message: 'What is the new Employees Role?',
         choices: () => {
           const roleList = [];
-          rolesRes.forEach((role) => {
+          res.forEach((role) => {
             const name = role.title;
             const value = role.id;
             roleList.push({ name, value })
           })
           return roleList;
         }
+      },
+      {
+        type: 'input',
+        name: 'addEmpMngr',
+        message: 'What is the employee ID of the manager you would like to oversee this new employee? (If NULL, press \'enter\' to skip)'
       }
     ])
-
+      .then(({ addFirstName, addLastName, addEmpRole, addEmpMngr }) => {
+        res.map(rolesData => {
+          console.log(rolesData);
+          console.log(addEmpRole);
+          let roleId = rolesData.id;
+          if (roleId === addEmpRole) {
+            console.log(roleId);
+            db.query('INSERT INTO employees SET ?',
+              ({
+                first_name: addFirstName,
+                last_name: addLastName,
+                role_id: roleId,
+                manager_id: addEmpMngr
+              }),
+              console.log('Fresh Meat Added to Employee Roster ;)')
+            )
+          }
+        })
+      })
+      .then(() => {
+        console.log('Updated Employee List');
+        getEmployees();
+      })
   })
 };
 
@@ -194,32 +228,13 @@ function updateRole() {
                   });
                 };
               };
-              joinAllTables();
+              console.log({ message: 'Here is the updated Employees Table' });
+              getEmployees();
             });
         });
       });
   });
 }
-
-function joinAllTables() {
-  const sql = 'SELECT * FROM employees INNER JOIN roles ON employees.role_id = roles.id INNER JOIN departments ON roles.department_id = departments.id';
-  db.query(sql, (err, res) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log({ message: 'Here is the updated Employees Table' });
-    console.table(res);
-    mainMenu();
-  })
-}
-
-
-
-//   const mgrName = `SELECT employees.*,
-// manager_id AS manager_name
-// CONCAT('first_name', ' ', 'last_name') INTO manager_id
-// FROM employees
-// WHERE 'id' = manager_id`;
 
 
 
