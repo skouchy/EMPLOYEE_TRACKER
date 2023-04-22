@@ -2,7 +2,7 @@
 A database app used to track employee records
 
 ## Description
-A simple, user friendly command line application that allows managers, or business owners, to track employee data relevant to department and role placement. The user is able to add employees, roles, and departments as they grow in size. They are also to change an employees role, and the placement of the department along with it. ALSO, should an employee's manager change, the user has the ability to update that, as well.
+A simple, user friendly command line application that allows managers, or business owners, to track employee data relevant to department and role placement. The user is able to add employees, roles, and departments as they grow in size. They are also to change an employees role, and the placement of the department along with it. ALSO, should an employee's role change, the user has the ability to update that, as well.
 
 
 ## Table of Contents (Optional)
