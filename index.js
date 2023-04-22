@@ -36,6 +36,12 @@ function mainMenu() {
     if (menuChoice === 'Add an employee') {
       addEmployee();
     }
+    if (menuChoice === 'Add a role') {
+      addRole();
+    }
+    if (menuChoice === 'Add a department') {
+      addDepartment();
+    }
     if (menuChoice === 'EXIT') {
       console.log('Make sure your employees feel appreciated! ByeBye for now!');
       db.end();
@@ -44,7 +50,7 @@ function mainMenu() {
 }
 
 
-// * =========================== CALLS MAIN PROMPT ON START ======================== * //
+// * ================ CALLS MAIN PROMPT ON START ============ * //
 
 function init() {
   mainMenu();
@@ -88,8 +94,9 @@ function getEmployees() {
 
 
 
-// * ================================= ADD TO TABLES ================================== * //
+// * =========================== ADD TO TABLES ========================= * //
 
+// * Add EMPLOYEE
 function addEmployee() {
 
   db.query('SELECT * FROM roles', (err, res) => {
@@ -162,16 +169,105 @@ function addEmployee() {
   })
 };
 
-function addRole() {
 
+// * ======== ADD ROLE ======== * // 
+
+function addRole() {
+  db.query('SELECT * FROM departments', (err, res) => {
+
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'addTitle',
+        message: 'What is the title of the job role you\'d like to add?',
+        validate: (addTitle) => {
+          if (!addTitle) {
+            return 'A title of the role is Required';
+          }
+          return true;
+        }
+      },
+      {
+        type: 'input',
+        name: 'addSalary',
+        message: 'Enter salary of this new role. Numbers only, please exclude any special characters',
+        validate: (addSalary) => {
+          if (isNaN(addSalary)) {
+            return 'Please enter the full number, excluding special characters!';
+          }
+          return true;
+        }
+      },
+      {
+        type: 'list',
+        name: 'addRoleDept',
+        message: 'Which Department does this role fall under?',
+        choices: () => {
+          const deptList = [];
+          res.forEach((dept) => {
+            const name = dept.name;
+            const value = dept.id;
+            deptList.push({ name, value })
+          })
+          return deptList;
+        }
+      }
+    ])
+      .then(({ addTitle, addSalary, addRoleDept }) => {
+        res.map(deptData => {
+          console.log(deptData);
+          console.log(addRoleDept);
+          let deptId = deptData.id;
+          if (deptId === addRoleDept) {
+            console.log(deptId);
+            db.query('INSERT INTO roles SET ?',
+              ({
+                title: addTitle,
+                salary: addSalary,
+                department_id: deptId
+              }),
+              console.log('Fresh Role hawt out the oven ;)')
+            )
+          }
+        })
+        console.log('Updated Roles List');
+        getRoles();
+      })
+  })
 };
+
 
 function addDepartment() {
+  db.query('SELECT * FROM departments', (err, res) => {
 
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'addDept',
+        message: 'What is the name of the department you\'d like to add?',
+        validate: (addDept) => {
+          if (!addDept) {
+            return 'Input Required';
+          }
+          return true;
+        }
+      }
+    ])
+      .then(({ addDept }) => {
+        db.query('INSERT INTO departments SET ?',
+          {
+            name: addDept
+          },
+          console.log('Fresh Depot ;)')
+        )
+        console.log('Updated Departments List');
+        getDepartments();
+      });
+  })
 };
 
 
-// * ============================== UPDATE EMPLOYEE ROLE =================================== * //
+// * ==================== UPDATE EMPLOYEE ROLE ========================= * //
 
 function updateRole() {
   db.query('SELECT employees.id, employees.first_name, employees.last_name FROM employees', (err, res) => {
