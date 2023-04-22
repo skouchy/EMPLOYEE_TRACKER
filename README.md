@@ -12,7 +12,6 @@ If your README is long, add a table of contents to make it easy for users to fin
 - [Installation](#installation) 
 - [Usage](#usage)
 - [License](#license)
-- [Badge](#badge)
 - [Screen Recording](#screen-recording)
 - [Screenshot](#screenshot)
 
@@ -38,16 +37,15 @@ npm start
 https://github.com/skouchy/EMPLOYEE_TRACKER
 
 ## Link to Application in ACTION
-<!--![https://watch.screencastify.com/v/hI4xljqc0NWfY3nCDT5i] -->
+https://drive.google.com/file/d/1Bxapd6LluMBANaRAzoCOykWJqnnMA0sd/view?usp=share_link
 
 ### Screenshot
-<!-- ![screenshot_skouchy_EMPLOYEE_TRACKER](https://user-images.githubusercontent.com/119292219/229270875-3c36d0c7-015f-49e9-a626-199ddf858f81.png) -->
+![EMPLOYEE_TRACKER Screenshot](https://user-images.githubusercontent.com/119292219/233773419-29d2064b-c3c9-4eaf-9067-8e12c5a09f08.png)
 
 
 
 ## License
 [MIT](https://opensource.org/badge/license/MIT/)
-### Badge
 
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 

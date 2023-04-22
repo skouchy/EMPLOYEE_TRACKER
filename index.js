@@ -1,4 +1,3 @@
-const { response } = require('express');
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 
@@ -57,7 +56,7 @@ function init() {
 };
 
 
-// * ================================== VIEW ALL ====================================== * //
+// * =========================== VIEW ALL ============================ * //
 
 function getDepartments() {
   db.query('SELECT * FROM departments', (err, res) => {
@@ -145,11 +144,9 @@ function addEmployee() {
     ])
       .then(({ addFirstName, addLastName, addEmpRole, addEmpMngr }) => {
         res.map(rolesData => {
-          console.log(rolesData);
-          console.log(addEmpRole);
           let roleId = rolesData.id;
+
           if (roleId === addEmpRole) {
-            console.log(roleId);
             db.query('INSERT INTO employees SET ?',
               ({
                 first_name: addFirstName,
@@ -324,7 +321,7 @@ function updateRole() {
                   });
                 };
               };
-              console.log({ message: 'Here is the updated Employees Table' });
+              console.log('Here is the updated Employees Table');
               getEmployees();
             });
         });
