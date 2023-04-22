@@ -18,54 +18,54 @@ THEN I am presented with the following options:
  <!-- ? add an employee,  --> POST
  
  <!-- TODO:  CREATE prepared statements for each UPDATE, then test, then insert statement into schema -->
- <!-- ! and update an employee role --> PUT
+ <!--  and update an employee role --> 
 
 
 
 
 # WHEN I start the application ---------------------------
- <!-- TODO:  Inquirer Prompts -->
+ <!--  Inquirer Prompts -->
  <!--@ What would you like to do? -->
- View All departments
- View All roles
- View All employees
+ <!-- View All departments -->
+ <!-- View All roles -->
+ <!-- View All employees -->
  -----------------
  Add a department
  Add a role
  Add an employee
  -----------------
- Update an employee role
+ <!-- Update an employee role -->
 
 
 # GET -------------------------
 
-WHEN I choose to view all departments
- <!-- TODO:  Inquirer Function to call working router.get(API/departments)  -->
+<!-- WHEN I choose to view all departments -->
+ <!-- Inquirer Function to call working router.get(API/departments)  -->
 
-THEN I am presented with a formatted table showing 
-<!-- *?* department names -->
-<!-- *?* department ids -->
+<!-- THEN I am presented with a formatted table showing  -->
+<!-- department names -->
+<!-- department ids -->
 
 
 
-WHEN I choose to view all roles
- <!-- TODO:  Inquirer Function to call working router.get(API/roles)  -->
+<!-- WHEN I choose to view all roles -->
+ <!--  Inquirer Function to call working router.get(API/roles)  -->
 THEN I am presented with the 
-<!-- *** job title,  -->
-<!-- *** role id,  -->
+<!--  job title,  -->
+<!--  role id,  -->
 <!-- *** the department that role belongs to--><!-- * REFERENCE department_id -->
-<!-- *** the salary for that role -->
+<!--  the salary for that role -->
 
 
 
 WHEN I choose to view all employees
- <!-- TODO:  Inquirer Function to call working router.get(API/employees)  -->
+ <!-- Inquirer Function to call working router.get(API/employees)  -->
 THEN I am presented with a formatted table showing 
   <!-- employee data, including  -->
-<!-- * employee ids,  -->
-<!-- * first names,  -->
-<!-- * last names,  -->
-<!-- * job titles,  -->
+<!-- employee ids,  -->
+<!-- first names,  -->
+<!-- last names,  -->
+<!-- job titles,  -->
 <!-- * departments,  --><!-- * REFERENCE department_id -->
 <!-- * salaries,  -->
 <!-- * managers that the employees report to --><!-- * REFERENCE department.manager_id -->

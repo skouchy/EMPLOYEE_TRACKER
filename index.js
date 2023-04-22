@@ -1,14 +1,13 @@
-
 const db = require('./db/connection');
 const inquirer = require('inquirer');
-// const mysql = require('mysql2');
-// const mysql = require('dotenv').config();
-// const console = require('console.table');
+
+
+// * ========================== MAIN PROMPT ================================= * //
 
 function mainMenu() {
   inquirer.prompt({
     type: 'list',
-    name: 'firstChoice',
+    name: 'menuChoice',
     message: 'What would you like to do?',
     choices: [
       'View all departments',
@@ -18,31 +17,37 @@ function mainMenu() {
       'Add a role',
       'Add an employee',
       'Update employee role',
-      'Exit'
+      'EXIT'
     ]
-  }).then(({ firstChoice }) => {
-    if (firstChoice === 'View all departments') {
+  }).then(({ menuChoice }) => {
+    if (menuChoice === 'View all departments') {
       getDepartments();
     }
-    if (firstChoice === 'View all roles') {
+    if (menuChoice === 'View all roles') {
       getRoles();
     }
-    if (firstChoice === 'View all employees') {
+    if (menuChoice === 'View all employees') {
       getEmployees();
     }
-    if (firstChoice === 'Update employee role') {
+    if (menuChoice === 'Update employee role') {
       updateRole();
     }
-
-
-  }
-  )
-
+    if (menuChoice === 'EXIT') {
+      console.log('Make sure your employees feel appreciated! ByeBye for now!');
+      db.end();
+    }
+  })
 }
+
+
+// * =========================== CALLS MAIN PROMPT ON START ======================== * //
 
 function init() {
   mainMenu();
 };
+
+
+// * ================================== VIEW ALL ====================================== * //
 
 function getDepartments() {
   db.query('SELECT * FROM departments', (err, res) => {
@@ -55,7 +60,7 @@ function getDepartments() {
 };
 
 function getRoles() {
-  db.query('SELECT * FROM roles', (err, res) => {
+  db.query('SELECT roles.*, departments.name AS department FROM roles JOIN departments ON roles.department_id = departments.id', (err, res) => {
     if (err) {
       console.log(err);
     }
@@ -65,7 +70,8 @@ function getRoles() {
 };
 
 function getEmployees() {
-  db.query('SELECT * FROM employees', (err, res) => {
+
+  db.query('SELECT employees.*, roles.title AS job_title, departments.name AS department FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id', (err, res) => {
     if (err) {
       console.log(err);
     }
@@ -74,9 +80,69 @@ function getEmployees() {
   })
 };
 
+
+// * ================================= ADD TO TABLES ================================== * //
+
+function addEmployee() {
+
+  db.query('SELECT * FROM roles', (err, res) => {
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'addFirstName',
+        message: 'What is the employee\'s first name?',
+        validate: (addFirstName) => {
+          if (!addFirstName) {
+            return 'First name is Required';
+          }
+          return true;
+        }
+      },
+      {
+        type: 'input',
+        name: 'addLastName',
+        message: 'What is the employee\'s last name?',
+        validate: (addLastName) => {
+          if (!addLastName) {
+            return 'Last name is Required';
+          }
+          return true;
+        }
+      },
+      {
+        type: 'list',
+        name: 'addEmpRole',
+        message: 'What is the new Employees Role?',
+        choices: () => {
+          const roleList = [];
+          rolesRes.forEach((role) => {
+            const name = role.title;
+            const value = role.id;
+            roleList.push({ name, value })
+          })
+          return roleList;
+        }
+      }
+    ])
+
+  })
+};
+
+function addRole() {
+
+};
+
+function addDepartment() {
+
+};
+
+
+// * ============================== UPDATE EMPLOYEE ROLE =================================== * //
+
 function updateRole() {
   db.query('SELECT employees.id, employees.first_name, employees.last_name FROM employees', (err, res) => {
 
+    // * WHICH EMPLOYEE prompt to UPDATE ROLE
     inquirer.prompt([
       {
         type: 'list',
@@ -93,6 +159,7 @@ function updateRole() {
         }
       }
     ])
+      // * WHICH ROLE prompt to UPDATE
       .then((choiceEmployee) => {
         db.query('SELECT roles.id, roles.title FROM roles', (err, rolesRes) => {
 
@@ -107,13 +174,12 @@ function updateRole() {
                   const name = role.title;
                   const value = role.id;
                   roleList.push({ name, value })
-                  // console.log(`DIS DA ROLE DATA RETURNED APPPAAAARRREEEENNTTLYYY: `, role);
                 })
-                // console.log(`rooolll  LEEEEEEST: `, roleList);
                 return roleList;
               }
             }
           ])
+            // * inner sql UPDATE EMPLOYEE by ID WHERE ROLE_ID
             .then((choiceRole) => {
               for (let i = 0; i < rolesRes.length; i++) {
                 if (choiceRole.selectRole === (rolesRes[i].id)) {
@@ -125,34 +191,29 @@ function updateRole() {
                       return;
                     }
                     console.log('Employee role updated :)');
+                  });
+                };
+              };
+              joinAllTables();
+            });
+        });
+      });
+  });
+}
 
-                  })
-                }
-              }
-              const sql = 'SELECT * FROM employees INNER JOIN roles ON employees.role_id = roles.id INNER JOIN departments ON roles.department_id = departments.id';
-              //   const params = [choiceEmployee.id];
-              db.query(sql, (err, resUpdated) => {
-                if(err){
-                  console.log(err);
-                }
-                console.log({ message: 'Here is the updated Employees Table' });
-                console.table(resUpdated);
-                mainMenu();
-                })
-              })
-            })
-        })
-      })
-  }
+function joinAllTables() {
+  const sql = 'SELECT * FROM employees INNER JOIN roles ON employees.role_id = roles.id INNER JOIN departments ON roles.department_id = departments.id';
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log({ message: 'Here is the updated Employees Table' });
+    console.table(res);
+    mainMenu();
+  })
+}
 
 
-
-
-// db.get('/employees', (req, res) => {
-// const sql = `SELECT * FROM employees;`;
-//   const sql = `SELECT employees.*, roles.title AS job_title
-// FROM employees
-// JOIN roles ON employees.role_id = roles.id`;
 
 //   const mgrName = `SELECT employees.*,
 // manager_id AS manager_name
@@ -162,50 +223,4 @@ function updateRole() {
 
 
 
-// 
-// // return res.json({
-// //   message: 'All Employees Displayed!',
-// //   data: rows
-// // });
-// console.table(res);
-
-
-//     if (firstPrompt === 'View all departments') {
-//       allDepartments();
-//   }
-//   if (firstPrompt === 'View all roles') {
-//       allRoles();
-//   }
-//   if (firstPrompt === 'View all employees') {
-//       allEmployees();
-//   }
-//   if (firstPrompt === 'Add a department') {
-//       addDepartment();
-//   }
-//   if (firstPrompt === 'Add a role') {
-//       addRole();
-//   }
-//   if (firstPrompt === 'Add an employee') {
-//       addEmployee();
-//   }
-//   if (firstPrompt === 'Update employee role') {
-//       updateRole();
-//   }
-//   if (firstPrompt === 'Exit') {
-//       db.end();
-//   }
-// };
-
-
 init();
-
-
-
-// function init(choices) => {
-//     prompt.inquirer(
-//         type: listenerCount,
-//         name: 
-//     )
-
-// }
-// )
